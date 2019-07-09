@@ -9,17 +9,17 @@ To ensure uninterrupted cryptographic security, it is important to begin the tra
 # Installation
 
 A local gradle wrapper is provided which can be used for different tasks
-  - 'gradlew jar' packages the library into a .jar-file which can be added to another project. You also need to add the two .jar-files in the libs/-directory to this project.
-  - 'gradlew javadoc' creates the JavaDoc for the library
-  - 'gradlew test' runs the tests
+  - `gradlew jar` packages the library into a `.jar` file which can be added to another project. You also need to add the two `.jar` files in the `libs/` directory to this project.
+  - `gradlew javadoc` creates the JavaDoc for the library
+  - `gradlew test` runs the tests
 
 # Example Usage
 
-You can find tests in src/test/java which show multiple usage examples.
+You can find tests in `src/test/java` which show multiple usage examples.
 
 # API Documentation
 
-As stated above you can use gradle to generate the JavaDocs: 'gradlew javadoc'
+As stated above you can use gradle to generate the JavaDocs: `gradlew javadoc`
 
 # Community Guidelines
 
