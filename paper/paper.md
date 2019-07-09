@@ -22,7 +22,7 @@ authors:
 affiliations:
  - name: Technische Universität Darmstadt, Germany
    index: 1
-date: 11 June 2019
+date: 09 July 2019
 bibliography: paper.bib
 ---
 
@@ -53,9 +53,9 @@ We realize these hybrid certificates fully compliant to the X.509 standard [@rfc
 
 # Implementation and features 
 
-We provide a Java implementation for BouncyCastle [@bouncyCastle] available at [https://github.com/jojowi/HybridCertificate](https://github.com/jojowi/HybridCertificate "Hybrid Certificates - Java, Bouncy Castle integration") that comprises generation procedures required to issue standard compliant hybrid certificates as well as path validation procedures for certification chains. Note that non-upgraded software evaluates hybrid certificates just as classical X.509 certificates. Therefore, full backwards-compatibility is provided, while falling back on the security of the classical signature scheme in these cases. Further technical details on the definition of the extensions, certificate generation, and path validation procedures can be found in the technical documentation [@tecDocu].
+We provide a Java implementation for BouncyCastle [@bouncyCastle] available at [https://github.com/CROSSINGTUD/bc-hybrid-certificates](https://github.com/CROSSINGTUD/bc-hybrid-certificates "Hybrid Certificates - Java, Bouncy Castle integration") [@BCHybridCert] that comprises generation procedures required to issue standard compliant hybrid certificates as well as path validation procedures for certification chains. Note that non-upgraded software evaluates hybrid certificates just as classical X.509 certificates. Therefore, full backwards-compatibility is provided, while falling back on the security of the classical signature scheme in these cases. Further technical details on the definition of the extensions, certificate generation, and path validation procedures can be found in the technical documentation [@tecDocu].
 
-The submitted Java implementation is independent, but fully compatible to a C implementation for the OQS OpenSSL fork [@OpenQuantumSafe], which integrates LIBOQS [@OpenQuantumSafe], a C library for quantum-safe cryptographic algorithms, into OpenSSL. The C version also implements hybrid certificates and can be accessed at [https://github.com/CROSSINGTUD/openssl-hybrid-certificates](https://github.com/CROSSINGTUD/openssl-hybrid-certificates "Hybrid Certificates - C, OpenSSL integration").
+The submitted Java implementation is independent, but fully compatible to a C implementation for the OQS OpenSSL fork [@OpenQuantumSafe], which integrates LIBOQS [@OpenQuantumSafe], a C library for quantum-safe cryptographic algorithms, into OpenSSL. The C version also implements hybrid certificates and can be accessed at [https://github.com/CROSSINGTUD/openssl-hybrid-certificates](https://github.com/CROSSINGTUD/openssl-hybrid-certificates "Hybrid Certificates - C, OpenSSL integration") [@opensslHybridCert].
 
 Our implementation enables a stepwise transition to post-quantum secure and hybrid algorithms in compliance with existing standards and software.  
 Hence, our software enables first uses and experiments with such algorithms in (parts of) real-life applications and systems without the risk of incompatibility problems due to unforeseen dependencies. 
