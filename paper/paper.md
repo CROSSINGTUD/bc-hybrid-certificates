@@ -3,8 +3,8 @@ title: 'X.509 Compliant Hybrid Certificates for the Post-Quantum Transition'
 tags:
   - Java
   - hybrid certificates
-	- X.509
-	- post quantum transition
+  - X.509
+  - post quantum transition
 authors:
  - name: Nina Bindel
    orcid: 0000-0001-6677-2474
