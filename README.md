@@ -7,8 +7,8 @@ With this project we provide an X.509 standard compliant Java implementation of 
 The target audience of this software are cryptographers as well as IT security experts and practitioners aiming at a smooth and secure transition to post-quantum cryptography at an early stage. Hybrid certificates support first uses and experiments with post-quantum secure and hybrid algorithms in (parts of) real-life applications and systems without the risk of incompatibility problems due to unforeseen dependencies.
 
 # Further reading and alternative implementations
-  - For a more detailed description and further references please refer to the [short paper](paper.md). 
-	- Additional technical details such as definition of extensions, certificate structure, OIDs, certificate generation, and path validation procedures can be found in the [technical documentation] (https://github.com/CROSSINGTUD/openssl-hybrid-certificates/blob/OQS-OpenSSL_1_1_1-stable/HybridCert_technical_documentation.pdf).
+  - For a more detailed description and further references please refer to the [short paper](https://github.com/CROSSINGTUD/bc-hybrid-certificates/blob/master/paper/paper.md). 
+	- Additional technical details such as definition of extensions, certificate structure, OIDs, certificate generation, and path validation procedures can be found in the [technical documentation](https://github.com/CROSSINGTUD/openssl-hybrid-certificates/blob/OQS-OpenSSL_1_1_1-stable/HybridCert_technical_documentation.pdf).
   - We also provide a fully compatible C implementation of hybrid certificates which can be found here: [https://github.com/CROSSINGTUD/openssl-hybrid-certificates](https://github.com/CROSSINGTUD/openssl-hybrid-certificates "Hybrid Certificates - C, OpenSSL integration")
 
 
@@ -26,6 +26,7 @@ Unit tests showing multiple usage examples can be found in `src/test/java`.
 # API documentation
 
 The API documentation is provided as Javadoc.
+
 You can use gradle to generate the HTML Javadoc files: `gradlew javadoc`
 
 # Community guidelines
