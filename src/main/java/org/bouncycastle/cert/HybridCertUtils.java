@@ -15,8 +15,11 @@ public class HybridCertUtils {
      *
      * @param cert the complete hybrid certificate
      * @return the tbs-part for the secondary signature
+     *
+     * @throws IOException if there is a problem parsing the extension-data
+     * @throws CertificateEncodingException on encoding error in the certificate
      */
-    public static byte[] extractBaseCertSearch(X509Certificate cert) throws IOException, CertificateEncodingException {
+    public static byte[] extractBaseCertSearch(X509Certificate cert) throws IOException,CertificateEncodingException {
         byte[] base = cert.getTBSCertificate();
         byte[] signature = HybridSignature.fromCert(cert).getSignature();
         replaceWithZeros(base, signature);

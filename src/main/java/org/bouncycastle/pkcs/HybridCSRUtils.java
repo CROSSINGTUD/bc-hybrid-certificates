@@ -13,6 +13,8 @@ public class HybridCSRUtils {
      *
      * @param csr the complete hybrid csr
      * @return the tbs-part for the secondary signature
+     *
+     * @throws IOException if there is a problem parsing the extension-data
      */
     public static byte[] extractBaseCSRSearch(PKCS10CertificationRequest csr) throws IOException {
         byte[] base = csr.toASN1Structure().getCertificationRequestInfo().getEncoded();

@@ -105,6 +105,8 @@ public class HybridKeyCertificateBuilder extends X509v3CertificateBuilder {
      *
      * @param primary the content signer to be used to generate the signature validating the certificate
      * @return a holder containing the resulting signed hybrid-key certificate
+     *
+     * @throws IOException on encoding error
      */
     public X509CertificateHolder buildHybrid(ContentSigner primary) throws IOException {
         addExtension(new ASN1ObjectIdentifier(HybridKey.OID), false, new HybridKey(this.secondary));

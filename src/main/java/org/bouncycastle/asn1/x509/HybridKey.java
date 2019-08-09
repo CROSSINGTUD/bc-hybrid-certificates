@@ -24,6 +24,8 @@ public class HybridKey extends ASN1Object {
      * Create a new HybridKey-Extension
      *
      * @param key the public key
+     *
+     * @throws IOException on an error encoding the key
      */
     public HybridKey(AsymmetricKeyParameter key) throws IOException {
         this.key = createSubjectPublicKeyInfo(key);
@@ -69,6 +71,8 @@ public class HybridKey extends ASN1Object {
      *
      * @param cert the certificate
      * @return the HybridKey-Extension
+     *
+     * @throws IOException if there is a problem parsing the extension-data
      */
     public static HybridKey fromCert(X509Certificate cert) throws IOException {
         byte[] data = cert.getExtensionValue(OID);
@@ -83,6 +87,8 @@ public class HybridKey extends ASN1Object {
      *
      * @param csr the CSR
      * @return the HybridKey-Extension
+     *
+     * @throws IOException if there is a problem parsing the extension-data
      */
     public static HybridKey fromCSR(PKCS10CertificationRequest csr) throws IOException {
         org.bouncycastle.asn1.pkcs.Attribute[] attr = csr.getAttributes(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest);

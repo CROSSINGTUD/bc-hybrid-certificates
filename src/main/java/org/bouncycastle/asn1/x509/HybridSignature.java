@@ -60,6 +60,8 @@ public class HybridSignature extends ASN1Object {
      *
      * @param cert the certificate
      * @return the HybridSignature-Extension
+     *
+     * @throws IOException if there is a problem parsing the extension-data
      */
     public static HybridSignature fromCert(X509Certificate cert) throws IOException {
         byte[] data = cert.getExtensionValue(OID);
@@ -76,6 +78,8 @@ public class HybridSignature extends ASN1Object {
      *
      * @param csr the CSR
      * @return the HybridSignature-Extension
+     *
+     * @throws IOException if there is a problem parsing the extension-data
      */
     public static HybridSignature fromCSR(PKCS10CertificationRequest csr) throws IOException {
         org.bouncycastle.asn1.pkcs.Attribute[] attr = csr.getAttributes(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest);

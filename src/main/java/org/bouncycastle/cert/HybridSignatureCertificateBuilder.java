@@ -105,6 +105,8 @@ public class HybridSignatureCertificateBuilder extends X509v3CertificateBuilder 
      * @param primary the content signer to be used to generate the signature validating the certificate
      * @param secondary the message signer to be used to generate the secondary (hybrid) signature
      * @return a holder containing the resulting signed hybrid certificate
+     *
+     * @throws IOException on encoding error
      */
     public X509CertificateHolder buildHybrid(ContentSigner primary, ContentSigner secondary) throws IOException {
         int secondarySigSize = secondary.getSignature().length;

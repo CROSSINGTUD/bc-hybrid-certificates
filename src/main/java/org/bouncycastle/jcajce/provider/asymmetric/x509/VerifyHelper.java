@@ -14,6 +14,10 @@ public class VerifyHelper {
      *
      * @param algId the algorithm identifier
      * @return a signature object for the given algorithm
+     *
+     * @throws NoSuchAlgorithmException if a {@code SignatureSpi} implementation for the specified algorithm is not available
+     * @throws SignatureException on signature generation error
+     * @throws InvalidKeyException if the key is malformed
      */
     public static Signature createSignature(AlgorithmIdentifier algId) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
         String sigName = X509SignatureUtil.getSignatureName(algId);

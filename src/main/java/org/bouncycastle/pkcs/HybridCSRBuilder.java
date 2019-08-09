@@ -66,6 +66,8 @@ public class HybridCSRBuilder {
      * @param oid the object identifier of the extension
      * @param isCritical whether the extension should be critical
      * @param value the extension value
+     *
+     * @throws IOException on encoding error
      */
     public void addExtension(ASN1ObjectIdentifier oid, boolean isCritical, ASN1Encodable value) throws IOException {
         this.extGen.addExtension(oid, isCritical, value);
@@ -106,6 +108,8 @@ public class HybridCSRBuilder {
      * @param primary the content signer to be used to generate the signature validating the certificate
      * @param secondary the message signer to be used to generate the secondary (hybrid) signature
      * @return the resulting, signed CSR
+     *
+     * @throws IOException on encoding error
      */
     public PKCS10CertificationRequest buildHybrid(ContentSigner primary, ContentSigner secondary) throws IOException {
         int secondarySigSize = secondary.getSignature().length;
