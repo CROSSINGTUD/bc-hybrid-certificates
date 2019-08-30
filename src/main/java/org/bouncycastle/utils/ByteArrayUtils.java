@@ -25,4 +25,18 @@ public class ByteArrayUtils {
         int index = Collections.indexOfSubList(baseList, sigList);
         Arrays.fill(base, index, index + replace.length, (byte) 0);
     }
+
+    public static void replaceZeros(byte[] base, byte[] replace) {
+        List<Byte> baseList = new LinkedList<>();
+        for (byte b : base) {
+            baseList.add(b);
+        }
+        List<Byte> nullList = new LinkedList<>();
+        byte nullByte = 0;
+        for (byte b : replace) {
+            nullList.add(nullByte);
+        }
+        int index = Collections.lastIndexOfSubList(baseList, nullList);
+        System.arraycopy(replace, 0, base, index, replace.length);
+    }
 }

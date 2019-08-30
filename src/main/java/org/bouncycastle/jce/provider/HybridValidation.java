@@ -10,6 +10,7 @@ import org.bouncycastle.pqc.crypto.qtesla.QTESLAUtils;
 import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
 
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.security.*;
 import java.security.cert.*;
 import java.security.cert.Certificate;
@@ -28,10 +29,11 @@ class HybridValidation {
     private void validateCert(Certificate certificate, boolean first, boolean last) throws CertPathValidatorException, IOException, NoSuchAlgorithmException, SignatureException, InvalidKeyException, CertificateEncodingException {
         X509Certificate cert = (X509Certificate) certificate;
         if (first) {
-            if (cert.getNonCriticalExtensionOIDs().contains(HybridKey.OID))
+            try {
                 this.hybridPublicKey = HybridKey.fromCert(cert).getKey();
-            else
+            } catch (Exception e) {
                 throw new CertPathValidatorException("Cert does not contain secondary key");
+            }
         }
         boolean verify;
         AlgorithmIdentifier algId = getAlgId(cert);
@@ -47,10 +49,11 @@ class HybridValidation {
         }
 
         if (!last) {
-            if (cert.getNonCriticalExtensionOIDs().contains(HybridKey.OID))
+            try {
                 this.hybridPublicKey = HybridKey.fromCert(cert).getKey();
-            else
+            } catch (Exception e) {
                 throw new CertPathValidatorException("Cert does not contain secondary key");
+            }
         }
     }
 

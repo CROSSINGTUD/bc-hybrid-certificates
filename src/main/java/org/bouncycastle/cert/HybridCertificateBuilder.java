@@ -1,6 +1,10 @@
 package org.bouncycastle.cert;
 
+import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
@@ -11,12 +15,18 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Date;
+
+import static org.bouncycastle.utils.ByteArrayUtils.replaceZeros;
+import static org.bouncycastle.utils.ByteBoolConverter.booleanToByte;
+import static org.bouncycastle.utils.ByteBoolConverter.byteToBoolean;
 
 /**
  * Helper class for creating hybrid certificates, which contain a secondary public key and a secondary signature
  */
-public class HybridCertificateBuilder extends HybridSignatureCertificateBuilder {
+public class HybridCertificateBuilder extends X509v3CertificateBuilder {
     private AsymmetricKeyParameter secondary;
 
     /**
@@ -95,14 +105,40 @@ public class HybridCertificateBuilder extends HybridSignatureCertificateBuilder 
         this(X500Name.getInstance(issuerCert.getSubjectX500Principal().getEncoded()), serial, notBefore, notAfter, subject, publicKey, secondary);
     }
 
-    @Override
     protected TBSCertificate prepareForHybrid(ContentSigner primary, int secondarySigSize, AlgorithmIdentifier secondaryAlgId) throws IOException {
-        addExtension(new ASN1ObjectIdentifier(HybridKey.OID), false, new HybridKey(this.secondary));
-        return super.prepareForHybrid(primary, secondarySigSize, secondaryAlgId);
+        ASN1EncodableVector v = new ASN1EncodableVector();
+        v.add(new HybridKey(this.secondary));
+        byte[] zeros = new byte[secondarySigSize];
+        v.add(new HybridSignature(zeros, secondaryAlgId));
+        DERSequence seq = new DERSequence(v);
+        boolean[] bool = byteToBoolean(seq.getEncoded());
+        setSubjectUniqueID(bool);
+        X509CertificateHolder cert = super.build(primary);
+        return cert.toASN1Structure().getTBSCertificate();
     }
 
     @Override
     public X509CertificateHolder build(ContentSigner primary) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Generate a hybrid X.509 certificate, based on the current issuer and subject using the passed in signer.
+     *
+     * @param primary the content signer to be used to generate the signature validating the certificate
+     * @param secondary the message signer to be used to generate the secondary (hybrid) signature
+     * @return a holder containing the resulting signed hybrid certificate
+     *
+     * @throws IOException on encoding error
+     */
+    public X509CertificateHolder buildHybrid(ContentSigner primary, ContentSigner secondary) throws IOException {
+        int secondarySigSize = secondary.getSignature().length;
+        TBSCertificate tbs = prepareForHybrid(primary, secondarySigSize, secondary.getAlgorithmIdentifier());
+        byte[] bytes = null;
+        secondary.getOutputStream().write(tbs.toASN1Primitive().getEncoded());
+        byte[] signature = secondary.getSignature();
+        bytes = tbs.getEncoded();
+        replaceZeros(bytes, signature);
+        return CertUtils.generateFullCert(primary, TBSCertificate.getInstance(bytes));
     }
 }

@@ -2,6 +2,7 @@ package org.bouncycastle.asn1.x509;
 
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.bouncycastle.crypto.util.SubjectPublicKeyInfoFactory;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
@@ -10,6 +11,9 @@ import org.bouncycastle.pqc.crypto.qtesla.QTESLAUtils;
 
 import java.io.IOException;
 import java.security.cert.X509Certificate;
+import java.util.BitSet;
+
+import static org.bouncycastle.utils.ByteBoolConverter.booleanToByte;
 
 /**
  * A X509-Extension which contains a secondary public key which is bound to the subject of the certificate.
@@ -75,31 +79,10 @@ public class HybridKey extends ASN1Object {
      * @throws IOException if there is a problem parsing the extension-data
      */
     public static HybridKey fromCert(X509Certificate cert) throws IOException {
-        byte[] data = cert.getExtensionValue(OID);
-        ASN1InputStream input = new ASN1InputStream(data);
-        ASN1OctetString octstr = ASN1OctetString.getInstance(input.readObject());
-        SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(octstr.getOctets());
+        boolean[] bool = cert.getSubjectUniqueID();
+        byte[] data = booleanToByte(bool);
+        ASN1Sequence seq = (ASN1Sequence) ASN1Sequence.fromByteArray(data);
+        SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(seq.getObjectAt(0));
         return new HybridKey(subjectPublicKeyInfo);
-    }
-
-    /**
-     * Extracts the HybridKey-Extension from a given CSR
-     *
-     * @param csr the CSR
-     * @return the HybridKey-Extension
-     *
-     * @throws IOException if there is a problem parsing the extension-data
-     */
-    public static HybridKey fromCSR(PKCS10CertificationRequest csr) throws IOException {
-        org.bouncycastle.asn1.pkcs.Attribute[] attr = csr.getAttributes(PKCSObjectIdentifiers.pkcs_9_at_extensionRequest);
-        if (attr.length > 0) {
-            ASN1Encodable[] encodable = attr[0].getAttributeValues();
-            Extensions ext = Extensions.getInstance(encodable[0]);
-            byte[] data = ext.getExtension(new ASN1ObjectIdentifier(OID)).getExtnValue().getEncoded();
-            ASN1InputStream input = new ASN1InputStream(data);
-            ASN1OctetString octstr = ASN1OctetString.getInstance(input.readObject());
-            SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(octstr.getOctets());
-            return new HybridKey(subjectPublicKeyInfo);
-        } else throw new IOException("no HybridKey extension request");
     }
 }

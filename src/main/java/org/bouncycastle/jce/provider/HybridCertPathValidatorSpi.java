@@ -24,11 +24,11 @@ public class HybridCertPathValidatorSpi extends PKIXCertPathValidatorSpi {
         } catch (CertPathValidatorException | CertificateEncodingException | SignatureException | NoSuchAlgorithmException | InvalidKeyException | IOException exception) {
             return new HybridCertPathValidatorResult(result, null, false);
         }
-        try {
-            X509Certificate cert = (X509Certificate) certPath.getCertificates().get(0);
+        X509Certificate cert = (X509Certificate) certPath.getCertificates().get(0);
 
-            if (cert.getNonCriticalExtensionOIDs().contains(HybridKey.OID)) {
-                SubjectPublicKeyInfo hybridKey = HybridKey.fromCert(cert).getKey();
+        try {
+            SubjectPublicKeyInfo hybridKey = HybridKey.fromCert(cert).getKey();
+            try {
                 AsymmetricKeyParameter key;
                 if (QTESLAUtils.isQTESLA(hybridKey.getAlgorithm()))
                     key = QTESLAUtils.fromSubjectPublicKeyInfo(hybridKey);
@@ -40,11 +40,11 @@ public class HybridCertPathValidatorSpi extends PKIXCertPathValidatorSpi {
                     }
                 }
                 return new HybridCertPathValidatorResult(result, key, true);
+            } catch (IOException e) {
+                throw new CertPathValidatorException(e.getMessage());
             }
-            else
-                return new HybridCertPathValidatorResult(result, null, true);
-        } catch (IOException e) {
-            throw new CertPathValidatorException(e.getMessage());
+        } catch (Exception e) {
+            return new HybridCertPathValidatorResult(result, null, true);
         }
     }
 }
