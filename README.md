@@ -34,4 +34,4 @@ You can use gradle to generate the HTML Javadoc files: `gradlew javadoc`
 # Community guidelines
 
 If you want to contribute, report issues or have questions you can use the issue tracker of this repository.
-Alternatively please contact Johannes Braun ([jbraun@cdc.informatik.tu-darmstadt.de](mailto:jbraun@cdc.informatik.tu-darmstadt.de))
+Alternatively please contact Johannes Braun ([johannes.braun@tu-darmstadt.de](mailto:johannes.braun@tu-darmstadt.de))
